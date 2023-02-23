@@ -1,0 +1,26 @@
+{
+  "name": "brushup-react",
+  "version": "1.0.0",
+  "description": "This is a project developed while studying about react",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahildubeydev/BrushUp-ReactJS.git"
+  },
+  "author": "Sahil Dubey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sahildubeydev/BrushUp-ReactJS/issues"
+  },
+  "homepage": "https://github.com/sahildubeydev/BrushUp-ReactJS#readme",
+  "devDependencies": {
+    "parcel": "^2.8.3",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
