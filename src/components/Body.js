@@ -2,6 +2,7 @@ import { restaurantList } from "../constants";
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 function filterData(searchText, restaurants) {
   const filterData = restaurants.filter((restaurant) =>
@@ -11,15 +12,11 @@ function filterData(searchText, restaurants) {
 }
 
 const Body = () => {
-  // Avoid Rendering components
-
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-  // searchText is a local state variable
-  const [searchText, setSearchText] = useState(""); // To create state variable
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    // API call
     getRestaurants();
   }, []);
 
@@ -28,23 +25,15 @@ const Body = () => {
       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
     );
     const json = await data.json();
-    console.log(json);
-    // Optional Chanining
     setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards);
     setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards);
   }
 
-  console.log("render");
-
-  // Conditional Rendering
-  // if restaurant is empty => shimmer Ui
-  // if restaurant has data => actual data Ui
-
   // not render component (Early return)
   if (!allRestaurants) return null;
 
-  if (filteredRestaurants?.length === 0)
-    return <h1>No Restaurant match your search!</h1>;
+  // if (filteredRestaurants?.length === 0)
+  //   return <h1>No Restaurant match your search!</h1>;
 
   return allRestaurants.length === 0 ? (
     <Shimmer />
@@ -76,7 +65,12 @@ const Body = () => {
       <div className="restaurant-list">
         {filteredRestaurants.map((restaurant) => {
           return (
-            <RestaurantCard {...restaurant.data} key={restaurant.data.id} />
+            <Link
+              to={"/restaurant/" + restaurant.data.id}
+              key={restaurant.data.id}
+            >
+              <RestaurantCard {...restaurant.data} key={restaurant.data.id} />
+            </Link>
           );
         })}
       </div>
