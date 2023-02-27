@@ -19,7 +19,7 @@ class About extends Component {
       <div>
         <h1>About Us Page</h1>
         <p>This is a Food App project. Day 09 - Finding the path🚀</p>
-        <ProfileFunctionalComponent />
+        <Profile />
       </div>
     );
   }
