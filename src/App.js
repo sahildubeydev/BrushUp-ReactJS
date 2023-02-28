@@ -1,4 +1,4 @@
-import { lazy, React, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
@@ -11,17 +11,29 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Profile from "./components/Profile";
 import Shimmer from "./components/Shimmer";
 // import Instamart from "./components/Instamart";
+import UserContext from "./utils/UserContext";
 
-// const Instamart = lazy(() => import("./components/Instamart"));
+const Instamart = lazy(() => import("./components/Instamart"));
 const About = lazy(() => import("./components/About"));
 // Upon On Demand Loading -> upon render -> react will suspend loading -> because the code is not loaded yet
 
 const AppLayout = () => {
+  const [user, setUser] = useState({
+    name: "Shiv Dubey",
+    email: "support@shiv.com",
+  });
+
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <UserContext.Provider
+        value={{
+          user: user,
+        }}
+      >
+        <Header />
+        <Outlet />
+        <Footer />
+      </UserContext.Provider>
     </>
   );
 };
@@ -34,7 +46,14 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Body />,
+        element: (
+          <Body
+            user={{
+              name: "Namaste React",
+              email: "namaste@react.com",
+            }}
+          />
+        ),
       },
       {
         path: "/about",
@@ -59,12 +78,12 @@ const appRouter = createBrowserRouter([
         element: <RestaurantMenu />,
       },
       {
-        // path: "/instamart",
-        // element: (
-        //   <Suspense fallback={<Shimmer />}>
-        //     <Instamart />
-        //   </Suspense>
-        // ),
+        path: "/instamart",
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <Instamart />
+          </Suspense>
+        ),
       },
     ],
   },
@@ -73,3 +92,14 @@ const appRouter = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(<RouterProvider router={appRouter} />);
+
+/**
+ * AppLayout
+ * (user)
+ *    - <Body user={user}/>
+ *     - <RestaurantContainer user=>
+ *      - RestaurantCard user={user}
+ *       - <h4>{user}</h4>
+ *
+ * This is known as PROPS DRILLING
+ */
